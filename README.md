@@ -24,6 +24,8 @@ The original CSV file is garbled due to Shift_JIS.
 ���с@�C���@�l,4980-11**-****-****,�O��Z�F�J�[�h�v���`�i�v���t�@�[�h
 2023/04/13,�d�s�b��s��,390,,,,���_�c���O�@�@�����@�@�@�@�y�E��
 2023/04/30,GITHUB, INC. (HTTPSGITHUB.C),1394,,,,10.00�@USD�@139.488�@05 01
+���с@�C���@�l,6900-11**-****-****,�`���������o�����^���c
+2023/04/27,�������̋@�^���c,120,,,,
 ```
 
 `read()` function reads a CSV file asynchronously.  
@@ -33,6 +35,8 @@ The original CSV file is garbled due to Shift_JIS.
 小林　修平　様,4980-11**-****-****,三井住友カードプラチナプリファード
 2023/04/13,ＥＴＣ首都高,390,,,,自神田橋外　　至台場　　　　軽・二
 2023/04/30,GITHUB, INC. (HTTPSGITHUB.C),1394,,,,10.00　USD　139.488　05 01
+小林　修平　様,6900-11**-****-****,ＡｐｐｌｅＰａｙ／ｉＤ
+2023/04/27,飲料自販機／ｉＤ,120,,,,
 ```
 
 `parse()` function converts CSV to JSON.  
@@ -46,6 +50,14 @@ Corrects unnecessary information, half-width and full-width characters, descript
     date: "2023/04/13",
     description: "ETC首都高 特別割引",
     note: "自錦糸町上 至台場 軽・二",
+    user: "小林 修平"
+  },
+  {
+    amount: 120,
+    card: "ApplePay/iD",
+    date: "2023/04/27",
+    description: "飲料自販機",
+    note: "",
     user: "小林 修平"
   },
   {
