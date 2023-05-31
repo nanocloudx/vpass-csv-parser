@@ -1,7 +1,6 @@
 # vpass-csv-parser
 
-CSV to JSON parser for Vpass (SMBC Card) statement
-
+CSV to JSON parser for Vpass (SMBC Card) statement  
 Vpass (三井住友カード) のカード利用明細 CSV を JSON に変換します
 
 ## Usage
@@ -50,11 +49,11 @@ Corrects unnecessary information, half-width and full-width characters, descript
     user: "小林 修平"
   },
   {
-    amount: 1394
-    card: "三井住友カードプラチナプリファード"
-    date: "2023/04/30"
-    description: "GITHUB INC. (HTTPSGITHUB.C)"
-    note: "10.00 USD 139.488 05 01"
+    amount: 1394,
+    card: "三井住友カードプラチナプリファード",
+    date: "2023/04/30",
+    description: "GITHUB INC. (HTTPSGITHUB.C)",
+    note: "10.00 USD 139.488 05 01",
     user: "小林 修平"
   }
 ]
