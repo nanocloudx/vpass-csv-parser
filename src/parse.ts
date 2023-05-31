@@ -21,7 +21,10 @@ export function parse(csv: string): Payment[] {
     if (detectRegex.test(line)) {
       const detected = line.match(detectRegex)
       user = detected![1].replaceAll('　', ' ')
-      card = detected![2].replaceAll('　', ' ').replace(/[Ａ-Ｚａ-ｚ０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xFEE0))
+      card = detected![2]
+          .replaceAll('　', ' ')
+          .replaceAll('／', '/')
+          .replace(/[Ａ-Ｚａ-ｚ０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xFEE0))
       return
     }
     // 意図しない文字列はスキップ(利用明細行は202nから始まる想定)
@@ -51,6 +54,7 @@ function cleanString(str: string) {
   result = result.replaceAll('／ＮＦＣ', '')
   result = result.replaceAll('／ＡＰ', '')
   result = result.replaceAll('／Ａｐｐｌｅ　Ｐａｙ', '')
+  result = result.replaceAll('／', '/')
   result = result.replaceAll('　', ' ')
   result = result.replaceAll('．', '.')
   result = result.replaceAll('＊', '*')
