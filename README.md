@@ -49,7 +49,7 @@ Corrects unnecessary information, half-width and full-width characters, descript
     card: "三井住友カードプラチナプリファード",
     date: "2023/04/13",
     description: "ETC首都高 特別割引",
-    note: "自錦糸町上 至台場 軽・二",
+    note: "自神田橋外 至台場 軽・二",
     user: "小林 修平"
   },
   {
