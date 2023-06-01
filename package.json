@@ -1,7 +1,7 @@
 {
   "name": "vpass-csv-parser",
-  "version": "0.1.4",
-  "description": "CSV to JSON parser for Vpass (SMBC Card) statement",
+  "version": "0.1.5",
+  "description": "CSV parser for Vpass (SMBC Card) statement",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": ["vpass", "smbc"],

@@ -10,16 +10,16 @@ type Payment = {
 }
 
 /**
- * CSV文字列をJSON文字列に変換します
+ * CSV文字列を変換します
  */
 export function parse(csv: string): Payment[] {
+  let result: Payment[] = []
   let user = ''
   let card = ''
-  let result: Payment[] = []
   const detectRegex = /^(.*)　様,[0-9]{4}-.*,(.*)/
   const lines = csv.split(/\r\n/)
   lines.forEach(line => {
-    // 利用者判定
+    // 利用者とカードの判定
     if (detectRegex.test(line)) {
       const detected = line.match(detectRegex)
       user = detected![1].replaceAll('　', ' ')
@@ -30,23 +30,26 @@ export function parse(csv: string): Payment[] {
       return
     }
     // 意図しない文字列はスキップ(利用明細行は yyyy/mm/dd から始まる想定)
-    if (isNaN(Date.parse(line.substring(0, 10)))) {
+    if (!line.startsWith('20') || isNaN(Date.parse(line.substring(0, 10)))) {
       return
     }
     // 文字列をオブジェクトに変換する
     const fixedLine = fixCsvLine(line)
     const [date, description, amountUsed, category, installments, amountToBePaid, note] = fixedLine.split(',')
-    result.push({
+    let item: Payment = {
       date,
       description: cleanString(description),
       amount: Number(amountToBePaid || amountUsed),
       user,
       card,
       note: cleanString(note),
-      category: category.length ? category : undefined,
-      installments: installments.length ? installments : undefined,
-    })
+    }
+    if (category.length || installments.length) {
+      item = {...item, category, installments}
+    }
+    result.push(item)
   })
+  // 利用日順にソート
   result = result.sort((a, b) => (a.date > b.date) ? 1 : -1)
   return result
 }
