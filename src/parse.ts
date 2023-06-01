@@ -45,7 +45,11 @@ export function parse(csv: string): Payment[] {
       note: cleanString(note),
     }
     if (category.length || installments.length) {
-      item = {...item, category, installments}
+      item = {
+        ...item,
+        category: detectCategory(category),
+        installments
+      }
     }
     result.push(item)
   })
@@ -54,7 +58,7 @@ export function parse(csv: string): Payment[] {
   return result
 }
 
-// 摘要欄の文字列をいい感じに改変する関数
+// 摘要欄の文字列をいい感じに改変する
 function cleanString(str: string) {
   let result = str
   result = result.replaceAll('／ｉＤ', '')
@@ -75,7 +79,7 @@ function cleanString(str: string) {
   return result
 }
 
-// 摘要欄の文字列にカンマが含まれている可能性を排除する関数
+// 摘要欄の文字列にカンマが含まれている可能性を排除する
 function fixCsvLine(line: string) {
   let fix = line
   while ((fix.match(/,/g) || []).length > 6) {
@@ -84,4 +88,20 @@ function fixCsvLine(line: string) {
     fix = fix.substring(0, secondCommaIndex) + fix.substring(secondCommaIndex + 1)
   }
   return fix
+}
+
+// 支払区分の記号を解読する
+function detectCategory(cat: string) {
+  switch (cat) {
+    case 'リ':
+      return 'リボ払い'
+    case 'ボ':
+      return 'ボーナス払い'
+    case '1':
+      return '一回払い'
+    case '':
+      return '' // おそらくマイ・ペイすリボ
+    default:
+      return `${cat}回払い`
+  }
 }
