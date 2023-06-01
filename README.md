@@ -1,7 +1,7 @@
 # vpass-csv-parser
 
-CSV to JSON parser for Vpass (SMBC Card) statement  
-Vpass (三井住友カード) のカード利用明細 CSV を JSON に変換します
+CSV parser for Vpass (SMBC Card) statement  
+Vpass (三井住友カード) のカード利用明細 CSV を変換します
 
 ## Usage
 
@@ -11,8 +11,25 @@ import { read, parse } from 'vpass-csv-parser'
 async function onFileSelect(e) {
   const file = e.target.files[0]
   const csv = await read(file)
-  const json = parse(csv)
-  console.log(json)
+  const payments = parse(csv)
+  console.log(payments)
+}
+```
+
+## Payment Type
+
+`parse()` function returns the `Payment[]` type.
+
+```
+type Payment = {
+  date: string // 利用日
+  description: string // 利用店名
+  amount: number // 利用金額
+  user: string // 利用者名
+  card: string // 利用カード
+  note: string // 備考欄
+  category?: string // 支払区分
+  installments?: string // 今回回数
 }
 ```
 
@@ -39,7 +56,7 @@ The original CSV file is garbled due to Shift_JIS.
 2023/04/27,飲料自販機／ｉＤ,120,,,,
 ```
 
-`parse()` function converts CSV to JSON.  
+`parse()` function converts CSV.  
 Corrects unnecessary information, half-width and full-width characters, description field commas, etc. during conversion.
 
 ```
@@ -48,7 +65,7 @@ Corrects unnecessary information, half-width and full-width characters, descript
     amount: 390,
     card: "三井住友カードプラチナプリファード",
     date: "2023/04/13",
-    description: "ETC首都高 特別割引",
+    description: "ETC首都高",
     note: "自神田橋外 至台場 軽・二",
     user: "小林 修平"
   },

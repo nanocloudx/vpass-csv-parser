@@ -1,10 +1,12 @@
 type Payment = {
   date: string
+  description: string
+  amount: number
   user: string
   card: string
-  amount: number
-  description: string
   note: string
+  category?: string
+  installments?: string
 }
 
 /**
@@ -27,20 +29,22 @@ export function parse(csv: string): Payment[] {
           .replace(/[Ａ-Ｚａ-ｚ０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xFEE0))
       return
     }
-    // 意図しない文字列はスキップ(利用明細行は202nから始まる想定)
-    if (!line.startsWith('202')) {
+    // 意図しない文字列はスキップ(利用明細行は yyyy/mm/dd から始まる想定)
+    if (isNaN(Date.parse(line.substring(0, 10)))) {
       return
     }
     // 文字列をオブジェクトに変換する
     const fixedLine = fixCsvLine(line)
-    const [date, description, amount, _1, _2, subAmount, note] = fixedLine.split(',')
+    const [date, description, amountUsed, category, installments, amountToBePaid, note] = fixedLine.split(',')
     result.push({
       date,
+      description: cleanString(description),
+      amount: Number(amountToBePaid || amountUsed),
       user,
       card,
-      amount: Number(amount || subAmount),
-      description: cleanString(description),
       note: cleanString(note),
+      category: category.length ? category : undefined,
+      installments: installments.length ? installments : undefined,
     })
   })
   result = result.sort((a, b) => (a.date > b.date) ? 1 : -1)
